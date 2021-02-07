@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import StepScreen from "./components/StepScreen/StepScreen";
 import axios from "axios";
-import { querySpotify } from "./spotifySearch";
+import { searchForMatches } from "./spotifySearch";
 
 function App() {
   const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URL } = process.env;
@@ -27,6 +27,7 @@ function App() {
 
     if (_token) {
       setToken(_token);
+      console.log(_token)
       axios
         .get("https://api.spotify.com/v1/me", {
           headers: { Authorization: "Bearer " + _token },

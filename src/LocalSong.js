@@ -4,7 +4,7 @@ class LocalSong {
     this.artist = artist;
     this.album = album;
     this.duration = duration;
-    this.spotifyMatches = [];
+    this.spotifyMatches = undefined;
   }
   getTitle() {
     return this.title;
@@ -18,8 +18,13 @@ class LocalSong {
   getDuration() {
     return this.duration;
   }
-  addSpotifyMatch(match) {
-    this.spotifyMatches.push(match);
+
+  getSpotifyMatches() {
+    return this.spotifyMatches;
+  }
+
+  setSpotifyMatches(match) {
+    this.spotifyMatches = match;
   }
 }
 
