@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import StepScreen from "./components/StepScreen/StepScreen";
 import axios from "axios";
 import { searchForMatches } from "./spotifySearch";
+import MatchScreen from "./components/MatchScreen/MatchScreen";
 
 function App() {
   const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URL } = process.env;
   const [step, setStep] = useState(1);
   const [token, setToken] = useState(undefined);
   const [user, setUser] = useState(undefined);
-  const [tags, setTags] = useState(null);
+  const [localSongs, setLocalSongs] = useState(null);
+  // const [songsWithMatches, setSongsWithMatches] = useState(null);
 
   useEffect(() => {
     const hash = window.location.hash
@@ -27,7 +29,6 @@ function App() {
 
     if (_token) {
       setToken(_token);
-      console.log(_token)
       axios
         .get("https://api.spotify.com/v1/me", {
           headers: { Authorization: "Bearer " + _token },
@@ -53,26 +54,45 @@ function App() {
     }
   };
 
-  const getFiles = (files) => {
-    setTags(files);
+  const getFiles = (songs) => {
+    setLocalSongs(songs);
     setStep(3);
   };
 
+  const runSearch = async () => {
+    for (let song of localSongs) {
+      await searchForMatches(token, song);
+    }
+    // setSongsWithMatches(localSongs)
+    setStep(0);
+  };
+
+  const toggleAddToLib = () => {};
+
   return (
     <div className="App">
-      <StepScreen
-        step={step}
-        tags={tags}
-        getSpotifyAuth={() => {
-          getSpotifyAuth();
-        }}
-        getFiles={(files) => {
-          getFiles(files);
-        }}
-        // runSearch={() => {
-        //   runSearch();
-        // }}
-      />
+      {step ? (
+        <StepScreen
+          step={step}
+          localSongs={localSongs}
+          getSpotifyAuth={() => {
+            getSpotifyAuth();
+          }}
+          getFiles={(files) => {
+            getFiles(files);
+          }}
+          runSearch={() => {
+            runSearch();
+          }}
+        />
+      ) : (
+        <MatchScreen
+          songs={localSongs}
+          toggleAddToLib={() => {
+            toggleAddToLib();
+          }}
+        />
+      )}
     </div>
   );
 }

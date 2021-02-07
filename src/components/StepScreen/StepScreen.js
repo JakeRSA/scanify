@@ -30,7 +30,7 @@ function StepScreen(props) {
       setIcon(runIcon);
       setHeading("RUN SEARCH");
       setSubHeading(
-        `Found ${props.tags.length} file(s). Let's find your songs on Spotify`
+        `Found ${props.localSongs.length} file(s). Let's find your songs on Spotify`
       );
     }
   }, [props.step]);
@@ -38,6 +38,7 @@ function StepScreen(props) {
   useEffect(() => {
     if (inputElem.current) {
       inputElem.current.setAttribute("webkitdirectory", true);
+      inputElem.current.setAttribute("multiple", true);
     }
   });
 
@@ -48,10 +49,10 @@ function StepScreen(props) {
     if (fileList.length !== 0) {
       for (let file of fileList) {
         const tags = await id3.fromFile(file);
-        const objectUrl = URL.createObjectURL(file);
-        const duration = await getBlobDuration(objectUrl);
-        URL.revokeObjectURL(objectUrl);
         if (tags) {
+          const objectUrl = URL.createObjectURL(file);
+          const duration = await getBlobDuration(objectUrl);
+          URL.revokeObjectURL(objectUrl);
           const localSong = new LocalSong(
             tags.title,
             tags.artist,
@@ -109,8 +110,10 @@ function StepScreen(props) {
             className="main-step-btn"
             alt={"run search"}
             src={icon}
-            onClick={() => {
-              props.runSearch();
+            onClick={async () => {
+              console.log("go");
+              await props.runSearch();
+              console.log("done");
             }}
           />
         )}
