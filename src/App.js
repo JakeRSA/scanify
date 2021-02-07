@@ -7,7 +7,8 @@ function App() {
   const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URL } = process.env;
   const [step, setStep] = useState(1);
   const [token, setToken] = useState(undefined);
-  const [user, setUser] = useState(undefined)
+  const [user, setUser] = useState(undefined);
+  const [tags, setTags] = useState(null);
 
   useEffect(() => {
     const hash = window.location.hash
@@ -27,10 +28,10 @@ function App() {
       setToken(_token);
       axios
         .get("https://api.spotify.com/v1/me", {
-          headers: { Authorization: 'Bearer ' + _token },
+          headers: { Authorization: "Bearer " + _token },
         })
         .then((res) => {
-          setUser(res.data)
+          setUser(res.data);
           setStep(2);
         });
     }
@@ -49,14 +50,25 @@ function App() {
         `response_type=token`;
     }
   };
-  console.log(token);
+
+  const getFiles = (files) => {
+    setTags(files);
+    setStep(3);
+  };
   return (
     <div className="App">
       <StepScreen
         step={step}
+        tags={tags}
         getSpotifyAuth={() => {
           getSpotifyAuth();
         }}
+        getFiles={(files) => {
+          getFiles(files);
+        }}
+        // runSearch={() => {
+        //   runSearch();
+        // }}
       />
     </div>
   );

@@ -4,43 +4,105 @@ import "./StepScreen.scss";
 import spotifyIcon from "../../spotify.png";
 import loadIcon from "../../load.png";
 import runIcon from "../../run.png";
+import { useState, useEffect, useRef } from "react";
+import * as id3 from "id3js/lib/id3.js";
 
 function StepScreen(props) {
-  let icon, heading, subHeading;
-  switch (props.step) {
-    case 1:
-      icon = spotifyIcon;
-      heading = "SIGN IN TO SPOTIFY";
-      subHeading="We need permission to add songs to your Spotify library"
-      break;
-    case 2:
-      icon = loadIcon;
-      heading = "SELECT FOLDER"
-      subHeading = "Select a folder to upload to Spotify"
-      break;
-    case 3:
-      icon = runIcon;
-      heading = "RUN SEARCH";
-      subHeading = "Let's find your songs on Spotify"
-      break;
-    default:
-      icon=spotifyIcon;
-  }
+  const [loadingFiles, setLoadingFiles] = useState(false);
+  const inputElem = useRef(document.querySelector("input"));
+  const [icon, setIcon] = useState(undefined);
+  const [heading, setHeading] = useState("");
+  const [subHeading, setSubHeading] = useState("");
 
+  useEffect(() => {
+    const step = props.step;
+    if (step === 1) {
+      setIcon(spotifyIcon);
+      setHeading("SIGN IN TO SPOTIFY");
+      setSubHeading("We need permission to add songs to your Spotify library");
+    } else if (step === 2) {
+      setIcon(loadIcon);
+      setHeading("SELECT FOLDER");
+      setSubHeading("Select a folder to upload to Spotify");
+    } else {
+      setIcon(runIcon);
+      setHeading("RUN SEARCH");
+      setSubHeading(
+        `Found ${props.tags.length} file(s). Let's find your songs on Spotify`
+      );
+    }
+  }, [props.step]);
+
+  useEffect(() => {
+    if (inputElem.current) {
+      inputElem.current.setAttribute("webkitdirectory", true);
+    }
+  });
+
+  const addFolder = async () => {
+    setLoadingFiles(true);
+    let newTags = [];
+    const fileList = inputElem.current.files;
+    if (fileList.length !== 0) {
+      for (let file of fileList) {
+        const tags = await id3.fromFile(file);
+        if (tags) newTags.push(tags);
+      }
+    }
+    setLoadingFiles(false);
+    if (newTags && newTags.length > 0) {
+      props.getFiles(newTags);
+    } else if (newTags) {
+      setSubHeading(
+        "Could not find any files. Make sure the folder contains .mp3 files"
+      );
+    }
+  };
   return (
     <div>
       <StepsHeader activeStep={props.step} />
       <div className="main-container">
-        <img
-          className="main-step-btn"
-          alt={"sign in to spotify"}
-          src={icon}
-          onClick={() => {props.getSpotifyAuth()}}
-        />
+        {props.step === 1 && (
+          <img
+            className="main-step-btn"
+            alt={"sign in to spotify"}
+            src={icon}
+            onClick={() => {
+              props.getSpotifyAuth();
+            }}
+          />
+        )}
+        {props.step === 2 && (
+          <label htmlFor="fileUpload">
+            <img
+              className="main-step-btn"
+              alt={"add folder from local library"}
+              src={icon}
+              onClick={addFolder}
+            />
+            <input
+              type="file"
+              id="fileUpload"
+              ref={inputElem}
+              onChange={() => {
+                addFolder();
+              }}
+              style={{ display: "none" }}
+            />
+          </label>
+        )}
+        {props.step === 3 && (
+          <img
+            className="main-step-btn"
+            alt={"run search"}
+            src={icon}
+            onClick={() => {
+              props.runSearch();
+            }}
+          />
+        )}
         <h1 className="btn-action-text">{heading}</h1>
-        <h4 className="btn-action-subtext">
-          {subHeading}
-        </h4>
+        <h4 className="btn-action-subtext">{subHeading}</h4>
       </div>
     </div>
   );
