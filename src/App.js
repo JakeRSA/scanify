@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import StepScreen from "./components/StepScreen/StepScreen";
 import axios from "axios";
+import { querySpotify } from "./spotifySearch";
 
 function App() {
   const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URL } = process.env;
@@ -55,6 +56,7 @@ function App() {
     setTags(files);
     setStep(3);
   };
+
   return (
     <div className="App">
       <StepScreen
