@@ -4,8 +4,13 @@ class LocalSong {
     this.artist = artist;
     this.album = album;
     this.duration = duration;
-    this.spotifyMatches = undefined;
+    this.spotify = undefined;
+    this.id =
+      new Date().getTime().toString(16) +
+      Math.floor(Math.random() * 10000).toString(16);
+    this.addToLib = false;
   }
+
   getTitle() {
     return this.title;
   }
@@ -20,11 +25,15 @@ class LocalSong {
   }
 
   getSpotifyMatches() {
-    return this.spotifyMatches;
+    return this.spotify;
   }
 
   setSpotifyMatches(match) {
-    this.spotifyMatches = match;
+    this.spotify = match;
+  }
+
+  setAddToLib(bool) {
+    this.addToLib = bool;
   }
 }
 

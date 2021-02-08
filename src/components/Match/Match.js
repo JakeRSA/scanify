@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Match.scss";
 
 function Match(props) {
-  const { title, artist, album, duration, spotifyMatches } = props.song;
+  const { title, artist, album, duration, id, addToLib, spotify } = props.song;
   const mm = Math.floor(duration / 60);
   const ss = Math.floor(duration % 60);
-  const MM = Math.floor(spotifyMatches.duration_ms / 60000);
-  const SS = Math.floor((spotifyMatches.duration_ms / 1000) % 60);
+  const MM = Math.floor(spotify.duration_ms / 60000);
+  const SS = Math.floor((spotify.duration_ms / 1000) % 60);
 
-  const spotifyArtistsArray = spotifyMatches.artists.map((artist) => {
+  const spotifyArtistsArray = spotify.artists.map((artist) => {
     return artist.name;
   });
   const spotifyArtists = spotifyArtistsArray.join(", ");
+  const [addToLibState, setAddToLibState] = useState(addToLib);
 
-  console.log(spotifyMatches);
   return (
     <div className="match">
       <div className="local">
@@ -24,17 +24,22 @@ function Match(props) {
       </div>
       <div className="spotify">
         <div>
-
-        <p className="title">{spotifyMatches.name}</p>
-        <p className="artist">{spotifyArtists}</p>
-        <p className="album">{spotifyMatches.album.name}</p>
-        <p className="duration">{`${MM}:${SS}`}</p>
+          <p className="title">{spotify.name}</p>
+          <p className="artist">{spotifyArtists}</p>
+          <p className="album">{spotify.album.name}</p>
+          <p className="duration">{`${MM}:${SS}`}</p>
         </div>
-        
-        <img src={spotifyMatches.album.images[1].url} />
+
+        <img src={spotify.album.images[1].url} />
       </div>
-      <div className="add-to-lib-div"
-      onClick={() => {props.toggleAddToLib()}}
+      <div
+        className={`add-to-lib-div ${
+          addToLib ? "add-to-lib-true" : "add-to-lib-false"
+        }`}
+        onClick={() => {
+          setAddToLibState(!addToLibState);
+          props.toggleAddToLib(id);
+        }}
       />
     </div>
   );

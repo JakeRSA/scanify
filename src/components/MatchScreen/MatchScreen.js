@@ -7,27 +7,27 @@ function MatchScreen(props) {
   return (
     <div className="results-container">
       <div className="match-grid">
-        {props.songs[0].spotifyMatches && (
+        {props.songs[0].spotify && (
           <Match
             song={props.songs[0]}
-            toggleAddtoLib={() => {
-              props.toggleAddtoLib();
+            toggleAddToLib={(songId) => {
+              props.toggleAddToLib(songId);
             }}
           />
         )}
-        {props.songs[0].spotifyMatches && (
+        {props.songs[0].spotify && (
           <Match
             song={props.songs[1]}
-            toggleAddtoLib={() => {
-              props.toggleAddtoLib();
+            toggleAddToLib={(songId) => {
+              props.toggleAddToLib(songId);
             }}
           />
         )}
-        {props.songs[0].spotifyMatches && (
+        {props.songs[0].spotify && (
           <Match
             song={props.songs[2]}
-            toggleAddtoLib={() => {
-              props.toggleAddtoLib();
+            toggleAddToLib={(songId) => {
+              props.toggleAddToLib(songId);
             }}
           />
         )}

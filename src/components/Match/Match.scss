@@ -16,7 +16,6 @@
       flex: 1;
       text-align: left;
       margin: 0.2rem;
-      // border-bottom : 2px solid white;
     }
     .artist {
       font-size: large;
@@ -36,8 +35,16 @@
   }
   .add-to-lib-div {
     width: 80px;
-    background-image: linear-gradient(#02c102, #002215);
     border-radius: 10px;
     border: 4px solid #001311;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .add-to-lib-true {
+    background-image: linear-gradient(#02c102, #002215);
+  }
+  .add-to-lib-false {
+    background-image: linear-gradient(#c10202, #220000);
   }
 }

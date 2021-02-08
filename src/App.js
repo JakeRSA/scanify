@@ -11,7 +11,6 @@ function App() {
   const [token, setToken] = useState(undefined);
   const [user, setUser] = useState(undefined);
   const [localSongs, setLocalSongs] = useState(null);
-  // const [songsWithMatches, setSongsWithMatches] = useState(null);
 
   useEffect(() => {
     const hash = window.location.hash
@@ -63,11 +62,13 @@ function App() {
     for (let song of localSongs) {
       await searchForMatches(token, song);
     }
-    // setSongsWithMatches(localSongs)
     setStep(0);
   };
 
-  const toggleAddToLib = () => {};
+  const toggleAddToLib = (songId) => {
+    const song = localSongs.find((song) => song.id === songId);
+    song.setAddToLib(!song.addToLib);
+  };
 
   return (
     <div className="App">
@@ -88,8 +89,8 @@ function App() {
       ) : (
         <MatchScreen
           songs={localSongs}
-          toggleAddToLib={() => {
-            toggleAddToLib();
+          toggleAddToLib={(songId) => {
+            toggleAddToLib(songId);
           }}
         />
       )}

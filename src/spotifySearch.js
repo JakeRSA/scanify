@@ -68,9 +68,10 @@ export const searchForMatches = async (token, localSong) => {
     if (titleSim > 0.7 || (albumSim > 0.6 && titleSim > 0.6)) {
       partialMatches.push(match);
     }
-
-    if (!localSong.getSpotifyMatches()) {
-      localSong.setSpotifyMatches(partialMatches);
-    }
+  }
+  if (!localSong.getSpotifyMatches()) {
+    localSong.setSpotifyMatches(partialMatches);
+  } else {
+    localSong.setAddToLib(true);
   }
 };
