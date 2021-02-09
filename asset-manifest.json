@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/scanify/static/css/main.b043588b.chunk.css",
+    "main.js": "/scanify/static/js/main.2e49906f.chunk.js",
+    "main.js.map": "/scanify/static/js/main.2e49906f.chunk.js.map",
+    "runtime-main.js": "/scanify/static/js/runtime-main.81bf5d83.js",
+    "runtime-main.js.map": "/scanify/static/js/runtime-main.81bf5d83.js.map",
+    "static/js/2.c5a6574c.chunk.js": "/scanify/static/js/2.c5a6574c.chunk.js",
+    "static/js/2.c5a6574c.chunk.js.map": "/scanify/static/js/2.c5a6574c.chunk.js.map",
+    "static/js/3.74d7ddcc.chunk.js": "/scanify/static/js/3.74d7ddcc.chunk.js",
+    "static/js/3.74d7ddcc.chunk.js.map": "/scanify/static/js/3.74d7ddcc.chunk.js.map",
+    "static/js/4.f525fd87.chunk.js": "/scanify/static/js/4.f525fd87.chunk.js",
+    "static/js/4.f525fd87.chunk.js.map": "/scanify/static/js/4.f525fd87.chunk.js.map",
+    "index.html": "/scanify/index.html",
+    "static/css/main.b043588b.chunk.css.map": "/scanify/static/css/main.b043588b.chunk.css.map",
+    "static/js/2.c5a6574c.chunk.js.LICENSE.txt": "/scanify/static/js/2.c5a6574c.chunk.js.LICENSE.txt",
+    "static/media/spotify.955ff1ec.png": "/scanify/static/media/spotify.955ff1ec.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.81bf5d83.js",
+    "static/js/2.c5a6574c.chunk.js",
+    "static/css/main.b043588b.chunk.css",
+    "static/js/main.2e49906f.chunk.js"
+  ]
+}
