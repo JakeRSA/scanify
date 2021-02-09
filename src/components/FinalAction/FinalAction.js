@@ -29,13 +29,14 @@ function FinalAction(props) {
             liked: true,
             existingPlaylist: false,
             newPlaylist: false,
-            existingPlaylistName: "",
+            existingPlaylistName: props.playlists[0] && props.playlists[0].id,
             newPlaylistName: "",
           }}
-          onSubmit={() => {}}
+          onSubmit={(values) => {
+            props.addToSpotify(trackIDs, values);
+          }}
         >
           {(props) => {
-            console.log(props.values.liked);
             return (
               <Form className="final-form">
                 <div>
