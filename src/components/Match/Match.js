@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import "./Match.scss";
 
 function Match(props) {
-  const { title, artist, album, duration, id, addToLib, spotify } = props.song;
+  const { title, artist, album, duration, id, addToLib } = props.song;
+  let spotify = props.song.spotify;
+
+  // for partial matches, use only the first matching result
+  if (Array.isArray(spotify)) {
+    spotify = spotify[0];
+  }
+
   const mm = Math.floor(duration / 60);
   const ss = Math.floor(duration % 60);
   const MM = Math.floor(spotify.duration_ms / 60000);
@@ -30,7 +37,10 @@ function Match(props) {
           <p className="duration">{`${MM}:${SS}`}</p>
         </div>
 
-        <img src={spotify.album.images[1].url} />
+        <img
+          alt={spotifyArtists + " - " + spotify.album.name}
+          src={spotify.album.images[1].url}
+        />
       </div>
       <div
         className={`add-to-lib-div ${
@@ -40,7 +50,7 @@ function Match(props) {
           setAddToLibState(!addToLibState);
           props.toggleAddToLib(id);
         }}
-      />
+      >{addToLib ? 'yes' : 'skip'}</div>
     </div>
   );
 }

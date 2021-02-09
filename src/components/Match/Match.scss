@@ -1,42 +1,47 @@
 .match {
-  background-image: linear-gradient(rgb(19, 27, 27), rgb(27, 27, 27));
   display: flex;
   flex: 1;
   .local,
   .spotify {
     flex-basis: 45%;
     border-radius: 10px;
-    border: 4px solid #001311;
-    background-image: linear-gradient(#004d46, #002925);
-    padding: 20px 20px;
-    margin: 0;
+    background-image: linear-gradient(#031110, #081413);
+    padding: 0 20px;
+    margin: 2px;
     color: white;
 
     p {
       flex: 1;
       text-align: left;
       margin: 0.2rem;
+      font-size: 12px;
     }
     .artist {
-      font-size: large;
+      font-size: 14px;
       font-weight: 600;
     }
   }
   .spotify {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     div {
       flex: 1;
     }
     img {
-      height: 120px;
-      width: 120px;
+      height: 75px;
+      width: 75px;
     }
   }
   .add-to-lib-div {
     width: 80px;
     border-radius: 10px;
     border: 4px solid #001311;
+    color: white;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Righteous', 'cursive';
     &:hover {
       cursor: pointer;
     }
