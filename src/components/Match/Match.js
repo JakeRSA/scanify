@@ -11,9 +11,11 @@ function Match(props) {
   }
 
   const mm = Math.floor(duration / 60);
-  const ss = Math.floor(duration % 60);
+  let ss = Math.floor(duration % 60);
+  if (ss < 10) ss = "0" + ss;
   const MM = Math.floor(spotify.duration_ms / 60000);
-  const SS = Math.floor((spotify.duration_ms / 1000) % 60);
+  let SS = Math.floor((spotify.duration_ms / 1000) % 60);
+  if (SS < 10) SS = "0" + SS; 
 
   const spotifyArtistsArray = spotify.artists.map((artist) => {
     return artist.name;

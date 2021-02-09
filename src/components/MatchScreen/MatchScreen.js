@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Match from "../Match/Match";
+import NoMatch from "../NoMatch/NoMatch";
 import "./MatchScreen.scss";
 
 function MatchScreen(props) {
@@ -58,6 +59,17 @@ function MatchScreen(props) {
 
   // render different text based on step
   useEffect(() => {
+    if (step === "exact") {
+      if (exactMatches.length === 0) {
+        setAnalysisText(
+          `We couldn't find any exact matches. Click next to see partial matches`
+        );
+      } else {
+        setAnalysisText(
+          `We found ${exactMatches.length} exact matches. Select which ones you'd like to add to your Liked Songs on Spotify`
+        );
+      }
+    }
     if (step === "partial") {
       if (partialMatches.length === 0) {
         setAnalysisText(
@@ -101,6 +113,10 @@ function MatchScreen(props) {
     />
   ));
 
+  const noMatchElems = noMatches.map((track) => (
+    <NoMatch key={track.id} song={track} />
+  ));
+
   return (
     <div className="results-container">
       <span className="results-analysis">
@@ -117,6 +133,7 @@ function MatchScreen(props) {
       <div className="match-grid">
         {step === "exact" && exactMatchElems}
         {step === "partial" && partialMatchElems}
+        {step === "no match" && noMatchElems}
       </div>
       <span>
         <button className="next-match-grid-btn" onClick={handleBackClick}>
