@@ -40,6 +40,14 @@ function MatchScreen(props) {
     }
   }, []);
 
+  const handleBackClick = () => {
+    if (step === "partial") {
+      setStep("exact");
+    } else if (step === "no match") {
+      setStep("partial");
+    }
+  };
+
   const handleNextClick = () => {
     if (step === "exact") {
       setStep("partial");
@@ -110,9 +118,14 @@ function MatchScreen(props) {
         {step === "exact" && exactMatchElems}
         {step === "partial" && partialMatchElems}
       </div>
-      <button className="next-match-grid-btn" onClick={handleNextClick}>
-        next
-      </button>
+      <span>
+        <button className="next-match-grid-btn" onClick={handleBackClick}>
+          back
+        </button>
+        <button className="next-match-grid-btn" onClick={handleNextClick}>
+          next
+        </button>
+      </span>
     </div>
   );
 }
