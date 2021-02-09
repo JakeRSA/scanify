@@ -1,15 +1,17 @@
-import "./App.css";
+import "./App.scss";
 import { useState, useEffect } from "react";
 import StepScreen from "./components/StepScreen/StepScreen";
 import axios from "axios";
 import { searchForMatches } from "./spotifySearch";
 import MatchScreen from "./components/MatchScreen/MatchScreen";
+import FinalAction from "./components/FinalAction/FinalAction";
 
 function App() {
   const { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URL } = process.env;
   const [step, setStep] = useState(1);
   const [token, setToken] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const [playlists, setPlaylists] = useState(undefined);
   const [localSongs, setLocalSongs] = useState(null);
 
   useEffect(() => {
@@ -35,6 +37,13 @@ function App() {
         .then((res) => {
           setUser(res.data);
           setStep(2);
+          axios
+            .get("https://api.spotify.com/v1/me/playlists", {
+              headers: { Authorization: "Bearer " + _token },
+            })
+            .then((res) => {
+              setPlaylists(res.data.items);
+            });
         });
     }
   }, []);
@@ -62,7 +71,7 @@ function App() {
     for (let song of localSongs) {
       await searchForMatches(token, song);
     }
-    setStep(0);
+    setStep(null);
   };
 
   const toggleAddToLib = (songId) => {
@@ -72,7 +81,7 @@ function App() {
 
   return (
     <div className="App">
-      {step ? (
+      {typeof step === "number" && (
         <StepScreen
           step={step}
           localSongs={localSongs}
@@ -86,13 +95,20 @@ function App() {
             runSearch();
           }}
         />
-      ) : (
+      )}
+      {!step && (
         <MatchScreen
           songs={localSongs}
           toggleAddToLib={(songId) => {
             toggleAddToLib(songId);
           }}
+          toResults={() => {
+            setStep("finally");
+          }}
         />
+      )}
+      {typeof step === "string" && (
+        <FinalAction songs={localSongs} playlists={playlists} />
       )}
     </div>
   );

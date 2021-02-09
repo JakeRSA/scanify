@@ -54,6 +54,8 @@ function MatchScreen(props) {
       setStep("partial");
     } else if (step === "partial") {
       setStep("no match");
+    } else if (step === "no match") {
+      props.toResults();
     }
   };
 
@@ -136,10 +138,16 @@ function MatchScreen(props) {
         {step === "no match" && noMatchElems}
       </div>
       <span>
-        <button className="next-match-grid-btn" onClick={handleBackClick}>
+        <button
+        className="main-btn"
+        onClick={handleBackClick}
+        style={step==="exact" ? {opacity: "20%"} :{opacity: "100%"}}
+        >
           back
         </button>
-        <button className="next-match-grid-btn" onClick={handleNextClick}>
+        <button className="main-btn"
+        onClick={handleNextClick}
+        >
           next
         </button>
       </span>

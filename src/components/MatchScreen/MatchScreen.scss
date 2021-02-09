@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: repeating-linear-gradient(#0b1800 20px, #000000 25px);
 }
 
 .grid-headers {
@@ -43,20 +42,6 @@
   overflow: hidden;
   overflow-y: scroll;
   flex: 1;
-}
-
-.next-match-grid-btn {
-  color: white;
-  font-size: large;
-  font-family: "Righteous", "cursive";
-  padding: 10px;
-  margin: 16px;
-  border: 2px solid white;
-  border-radius: 6px;
-  background-image: linear-gradient(#00945c, #00746b);
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 ::-webkit-scrollbar {
