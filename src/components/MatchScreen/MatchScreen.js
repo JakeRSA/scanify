@@ -7,8 +7,9 @@ function MatchScreen(props) {
   const [exactMatches, setExactMatches] = useState([]);
   const [partialMatches, setPartialMatches] = useState([]);
   const [noMatches, setNoMatches] = useState([]);
-  const [analysisText, setAnalysisText] = useState("")
+  const [analysisText, setAnalysisText] = useState("");
 
+  // on mount set state of matches
   useEffect(() => {
     const songs = props.songs;
     let tempExactMatches = [];
@@ -28,16 +29,49 @@ function MatchScreen(props) {
     setExactMatches(tempExactMatches);
     setPartialMatches(tempPartialMatches);
     setNoMatches(tempNoMatches);
-    if (!tempExactMatches) {
-      if (!partialMatches) {
-        setStep("no match");
-      } else {
-        setStep("partial");
-      }
+    if (tempExactMatches.length === 0) {
+      setAnalysisText(
+        `We couldn't find any exact matches. Click next to see partial matches`
+      );
     } else {
-      setAnalysisText(`We found ${exactMatches.length} exact matches. Select which ones you'd like to add to your Liked Songs on Spotify`);
+      setAnalysisText(
+        `We found ${tempExactMatches.length} exact matches. Select which ones you'd like to add to your Liked Songs on Spotify`
+      );
     }
   }, []);
+
+  const handleNextClick = () => {
+    if (step === "exact") {
+      setStep("partial");
+    } else if (step === "partial") {
+      setStep("no match");
+    }
+  };
+
+  // render different text based on step
+  useEffect(() => {
+    if (step === "partial") {
+      if (partialMatches.length === 0) {
+        setAnalysisText(
+          `We didn't get any partial matches. Click next to see what we couldn't find on Spotify`
+        );
+      } else {
+        setAnalysisText(
+          `We found ${partialMatches.length} partial matches. Select which ones you'd like to add to your Liked Songs on Spotify`
+        );
+      }
+    } else if (step === "no match") {
+      if (noMatches.length === 0) {
+        setAnalysisText(
+          `This is usually where we show you what we could not find on Spotify. This time, we found everything!`
+        );
+      } else {
+        setAnalysisText(
+          `We couldn't find a match for ${noMatches.length} tracks`
+        );
+      }
+    }
+  }, [step]);
 
   const exactMatchElems = exactMatches.map((match) => (
     <Match
@@ -64,13 +98,21 @@ function MatchScreen(props) {
       <span className="results-analysis">
         <p>{analysisText}</p>
       </span>
-      <span className="grid-headers">
-        <h3>Track in local library</h3>
-        <h3>Track on Spotify</h3>
-        <h4>Add to Spotify</h4>
-      </span>
-      <div className="match-grid">{exactMatchElems}</div>
-      <button className="next-match-grid-btn">next</button>
+      {(step === "exact" || step === "partial") && (
+        <span className="grid-headers">
+          <h3>Track in local library</h3>
+          <h3>Track on Spotify</h3>
+          <h4>Add to Spotify</h4>
+        </span>
+      )}
+
+      <div className="match-grid">
+        {step === "exact" && exactMatchElems}
+        {step === "partial" && partialMatchElems}
+      </div>
+      <button className="next-match-grid-btn" onClick={handleNextClick}>
+        next
+      </button>
     </div>
   );
 }
