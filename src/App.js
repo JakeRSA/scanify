@@ -71,8 +71,14 @@ function App() {
 
   const runSearch = async () => {
     for (let song of localSongs) {
-      await searchForMatches(token, song);
+      try {
+        await searchForMatches(token, song);
+      } catch (err) {
+        song.setSpotifyMatches([]);
+        console.log(err);
+      }
     }
+    console.log(localSongs);
     setStep(null);
   };
 

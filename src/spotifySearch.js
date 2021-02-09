@@ -43,10 +43,13 @@ export const searchForMatches = async (token, localSong) => {
       title.toLowerCase(),
       match.name.toLowerCase()
     );
-    const albumSim = similarity.compareTwoStrings(
-      album.toLowerCase(),
-      match.album.name.toLowerCase()
-    );
+    let albumSim;
+    if (album) {
+      albumSim = similarity.compareTwoStrings(
+        album.toLowerCase(),
+        match.album.name.toLowerCase()
+      );
+    } else albumSim = 1;
 
     if (titleSim + albumSim === 2) {
       localSong.setSpotifyMatches(match);

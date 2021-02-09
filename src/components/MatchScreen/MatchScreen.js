@@ -4,7 +4,7 @@ import NoMatch from "../NoMatch/NoMatch";
 import "./MatchScreen.scss";
 
 function MatchScreen(props) {
-  const [step, setStep] = useState("exact");
+  const [step, setStep] = useState("");
   const [exactMatches, setExactMatches] = useState([]);
   const [partialMatches, setPartialMatches] = useState([]);
   const [noMatches, setNoMatches] = useState([]);
@@ -30,15 +30,7 @@ function MatchScreen(props) {
     setExactMatches(tempExactMatches);
     setPartialMatches(tempPartialMatches);
     setNoMatches(tempNoMatches);
-    if (tempExactMatches.length === 0) {
-      setAnalysisText(
-        `We couldn't find any exact matches. Click next to see partial matches`
-      );
-    } else {
-      setAnalysisText(
-        `We found ${tempExactMatches.length} exact matches. Select which ones you'd like to add to your Liked Songs on Spotify`
-      );
-    }
+    setStep("exact");
   }, []);
 
   const handleBackClick = () => {
@@ -139,15 +131,13 @@ function MatchScreen(props) {
       </div>
       <span>
         <button
-        className="main-btn"
-        onClick={handleBackClick}
-        style={step==="exact" ? {opacity: "20%"} :{opacity: "100%"}}
+          className="main-btn"
+          onClick={handleBackClick}
+          style={step === "exact" ? { opacity: "20%" } : { opacity: "100%" }}
         >
           back
         </button>
-        <button className="main-btn"
-        onClick={handleNextClick}
-        >
+        <button className="main-btn" onClick={handleNextClick}>
           next
         </button>
       </span>

@@ -111,9 +111,7 @@ function StepScreen(props) {
             alt={"run search"}
             src={icon}
             onClick={async () => {
-              console.log("go");
               await props.runSearch();
-              console.log("done");
             }}
           />
         )}
