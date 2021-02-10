@@ -20,3 +20,19 @@
     outline: none;
   }
 }
+
+::-webkit-scrollbar {
+  width: 0.5em;
+  margin-left: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1ed760;
+  &:hover {
+    background: white;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}

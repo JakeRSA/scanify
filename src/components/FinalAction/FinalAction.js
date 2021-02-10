@@ -138,6 +138,12 @@ function FinalAction(props) {
           }}
         </Formik>
       </div>
+      <button className="main-btn" onClick={()=> {props.backToMatches()}}>
+        back to matches
+      </button>
+      <button className="main-btn" onClick={()=> {props.backToStart()}}>
+        select another folder
+      </button>
     </div>
   );
 }

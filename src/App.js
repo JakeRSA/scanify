@@ -78,7 +78,6 @@ function App() {
         console.log(err);
       }
     }
-    console.log(localSongs);
     setStep(null);
   };
 
@@ -172,6 +171,8 @@ function App() {
           songs={localSongs}
           playlists={playlists}
           addToSpotify={(IDs, formValues) => addToSpotify(IDs, formValues)}
+          backToMatches={()=> {setStep(null)}}
+          backToStart={()=>{setStep(2)}}
         />
       )}
     </div>
