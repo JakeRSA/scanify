@@ -72,51 +72,82 @@ function StepScreen(props) {
       );
     }
   };
+
+  const handleClick = () => {
+    if (props.step === 1) {
+      props.getSpotifyAuth();
+    } else if (props.step === 2) {
+      addFolder();
+    } else if (props.step === 3) {
+      props.runSearch();
+    }
+  };
   return (
     <div>
       <StepsHeader activeStep={props.step} />
       <div className="main-container">
-        {props.step === 1 && (
-          <img
-            className="main-step-btn"
-            alt={"sign in to spotify"}
-            src={icon}
-            onClick={() => {
-              props.getSpotifyAuth();
-            }}
-          />
-        )}
-        {props.step === 2 && (
-          <label htmlFor="fileUpload">
+        <h4 className="btn-action-subtext">{subHeading}</h4>
+        <div className="card">
+          {props.step === 1 && (
             <img
               className="main-step-btn"
-              alt={"add folder from local library"}
+              alt={"sign in to spotify"}
               src={icon}
-              onClick={addFolder}
-            />
-            <input
-              type="file"
-              id="fileUpload"
-              ref={inputElem}
-              onChange={() => {
-                addFolder();
+              onClick={() => {
+                props.getSpotifyAuth();
               }}
-              style={{ display: "none" }}
             />
-          </label>
-        )}
-        {props.step === 3 && (
-          <img
-            className="main-step-btn"
-            alt={"run search"}
-            src={icon}
-            onClick={async () => {
-              await props.runSearch();
-            }}
-          />
-        )}
-        <h1 className="btn-action-text">{heading}</h1>
-        <h4 className="btn-action-subtext">{subHeading}</h4>
+          )}
+          {props.step === 2 && (
+            <label htmlFor="fileUpload">
+              <img
+                className="main-step-btn"
+                alt={"add folder from local library"}
+                src={icon}
+                onClick={addFolder}
+              />
+              <input
+                type="file"
+                id="fileUpload"
+                ref={inputElem}
+                onChange={() => {
+                  addFolder();
+                }}
+                style={{ display: "none" }}
+              />
+            </label>
+          )}
+          {props.step === 3 && (
+            <img
+              className="main-step-btn"
+              alt={"run search"}
+              src={icon}
+              onClick={async () => {
+                await props.runSearch();
+              }}
+            />
+          )}
+
+          <button className="main-btn" onClick={() => handleClick()}>
+            {/* handle invisible file input on step 2 */}
+            {props.step === 2 ? (
+              <label htmlFor="fileUpload2">
+                {heading}
+                <input
+                  type="file"
+                  id="fileUpload2"
+                  ref={inputElem}
+                  onChange={() => {
+                    addFolder();
+                  }}
+                  style={{ display: "none" }}
+                />
+              </label>
+            ) : (
+              <p>{heading}</p>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

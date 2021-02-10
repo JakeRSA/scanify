@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./Match.scss";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck} from "@fortawesome/free-solid-svg-icons"
+
 
 function Match(props) {
   const { title, artist, album, duration, id, addToLib } = props.song;
@@ -52,7 +55,7 @@ function Match(props) {
           setAddToLibState(!addToLibState);
           props.toggleAddToLib(id);
         }}
-      >{addToLib ? 'yes' : 'skip'}</div>
+      >{addToLib ? <FontAwesomeIcon icon={faCheck} /> : 'skip'}</div>
     </div>
   );
 }
