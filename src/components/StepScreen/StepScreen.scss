@@ -59,3 +59,23 @@
     }
   }
 }
+
+.progress-container {
+  position: relative;
+  .progress-ring__circle {
+    transition: stroke-dashoffset 0.7s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-dasharray: calc(2 * 3.14 * 86) calc(2 * 3.14 * 86);
+  }
+
+  .percent-complete {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    transform: translate(-50%, -50%);
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -11,11 +11,13 @@ import LocalSong from "../../LocalSong";
 
 function StepScreen(props) {
   const [loadingFiles, setLoadingFiles] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [currentFileCount, setCurrentFileCount] = useState(0);
+  const [totalFileCount, setTotalFileCount] = useState(0);
   const inputElem = useRef(document.querySelector("input"));
   const [icon, setIcon] = useState(undefined);
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
-
   useEffect(() => {
     const step = props.step;
     if (step === 1) {
@@ -30,7 +32,7 @@ function StepScreen(props) {
       setIcon(runIcon);
       setHeading("RUN SEARCH");
       setSubHeading(
-        `Found ${props.localSongs.length} file(s). Let's find your songs on Spotify`
+        `Analysed ${props.localSongs.length} file(s). Let's find your songs on Spotify`
       );
     }
   }, [props.step]);
@@ -47,10 +49,12 @@ function StepScreen(props) {
     let songs = [];
     const fileList = inputElem.current.files;
     if (fileList.length !== 0) {
-      for (let file of fileList) {
-        const tags = await id3.fromFile(file);
+      setTotalFileCount(fileList.length);
+      for (let i = 0; i < fileList.length; i++) {
+        if (i% 10 === 0) setCurrentFileCount(i);
+        const tags = await id3.fromFile(fileList[i]);
         if (tags) {
-          const objectUrl = URL.createObjectURL(file);
+          const objectUrl = URL.createObjectURL(fileList[i]);
           const duration = await getBlobDuration(objectUrl);
           URL.revokeObjectURL(objectUrl);
           const localSong = new LocalSong(
@@ -64,6 +68,7 @@ function StepScreen(props) {
       }
     }
     setLoadingFiles(false);
+    setTotalFileCount(0);
     if (songs && songs.length > 0) {
       props.getFiles(songs);
     } else if (songs) {
@@ -79,12 +84,13 @@ function StepScreen(props) {
     } else if (props.step === 2) {
       addFolder();
     } else if (props.step === 3) {
+      setSearching(true);
       props.runSearch();
     }
   };
   return (
     <div>
-      <StepsHeader activeStep={props.step} />
+      <StepsHeader user={props.user} />
       <div className="main-container">
         <h4 className="btn-action-subtext">{subHeading}</h4>
         <div className="card">
@@ -98,35 +104,84 @@ function StepScreen(props) {
               }}
             />
           )}
-          {props.step === 2 && (
-            <label htmlFor="fileUpload">
+          {props.step === 2 &&
+            (loadingFiles ? (
+              <div className="progress-container">
+                <svg className="progress-ring" height="200" width="200">
+                  <circle
+                    className="progress-ring__circle"
+                    strokeWidth="4"
+                    fill="#1ed760"
+                    stroke="white"
+                    r="86"
+                    cx="100"
+                    cy="100"
+                    style={{
+                      strokeDashoffset: `${
+                        2 * Math.PI * 86 -
+                        (2 * Math.PI * 86 * currentFileCount) / totalFileCount
+                      }`,
+                    }}
+                  />
+                </svg>
+                <h4 className="percent-complete">
+                  {currentFileCount} / {totalFileCount}
+                </h4>
+              </div>
+            ) : (
+              <label htmlFor="fileUpload">
+                <img
+                  className="main-step-btn"
+                  alt={"add folder from local library"}
+                  src={icon}
+                  onClick={addFolder}
+                />
+                <input
+                  type="file"
+                  id="fileUpload"
+                  ref={inputElem}
+                  onChange={() => {
+                    addFolder();
+                  }}
+                  style={{ display: "none" }}
+                />
+              </label>
+            ))}
+          {props.step === 3 &&
+            (searching ? (
+              <div className="progress-container">
+                <svg className="progress-ring" height="200" width="200">
+                  <circle
+                    className="progress-ring__circle"
+                    strokeWidth="4"
+                    fill="#1ed760"
+                    stroke="white"
+                    r="86"
+                    cx="100"
+                    cy="100"
+                    style={{
+                      strokeDashoffset: `${
+                        2 * Math.PI * 86 -
+                        (2 * Math.PI * 86 * props.currentSearchSong) /
+                          props.localSongs.length
+                      }`,
+                    }}
+                  />
+                </svg>
+                <h4 className="percent-complete">
+                  {props.currentSearchSong} / {props.localSongs.length}
+                </h4>
+              </div>
+            ) : (
               <img
                 className="main-step-btn"
-                alt={"add folder from local library"}
+                alt={"run search"}
                 src={icon}
-                onClick={addFolder}
-              />
-              <input
-                type="file"
-                id="fileUpload"
-                ref={inputElem}
-                onChange={() => {
-                  addFolder();
+                onClick={async () => {
+                  await props.runSearch();
                 }}
-                style={{ display: "none" }}
               />
-            </label>
-          )}
-          {props.step === 3 && (
-            <img
-              className="main-step-btn"
-              alt={"run search"}
-              src={icon}
-              onClick={async () => {
-                await props.runSearch();
-              }}
-            />
-          )}
+            ))}
 
           <button className="main-btn" onClick={() => handleClick()}>
             {/* handle invisible file input on step 2 */}
@@ -136,9 +191,9 @@ function StepScreen(props) {
                 <input
                   type="file"
                   id="fileUpload2"
-                  ref={inputElem}
-                  onChange={() => {
-                    addFolder();
+                  onClick={(e) => {
+                    e.preventDefault();
+                    inputElem.current.click();
                   }}
                   style={{ display: "none" }}
                 />

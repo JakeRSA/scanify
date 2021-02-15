@@ -11,6 +11,7 @@ function App() {
   const [step, setStep] = useState(1);
   const [token, setToken] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  const [currentSearchSong, setCurrentSearchSong] = useState(0);
   const [playlists, setPlaylists] = useState(undefined);
   const [localSongs, setLocalSongs] = useState(null);
 
@@ -70,11 +71,12 @@ function App() {
   };
 
   const runSearch = async () => {
-    for (let song of localSongs) {
+    for (let i = 0; i < localSongs.length; i++) {
+      setCurrentSearchSong(i)
       try {
-        await searchForMatches(token, song);
+        await searchForMatches(token, localSongs[i]);
       } catch (err) {
-        song.setSpotifyMatches([]);
+        localSongs[i].setSpotifyMatches([]);
         console.log(err);
       }
     }
@@ -143,6 +145,7 @@ function App() {
       {typeof step === "number" && (
         <StepScreen
           step={step}
+          user={user}
           localSongs={localSongs}
           getSpotifyAuth={() => {
             getSpotifyAuth();
@@ -153,6 +156,7 @@ function App() {
           runSearch={() => {
             runSearch();
           }}
+          currentSearchSong={currentSearchSong}
         />
       )}
       {!step && (
