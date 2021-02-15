@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./Match.scss";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck} from "@fortawesome/free-solid-svg-icons"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 function Match(props) {
   const { title, artist, album, duration, id, addToLib } = props.song;
@@ -18,7 +17,7 @@ function Match(props) {
   if (ss < 10) ss = "0" + ss;
   const MM = Math.floor(spotify.duration_ms / 60000);
   let SS = Math.floor((spotify.duration_ms / 1000) % 60);
-  if (SS < 10) SS = "0" + SS; 
+  if (SS < 10) SS = "0" + SS;
 
   const spotifyArtistsArray = spotify.artists.map((artist) => {
     return artist.name;
@@ -55,7 +54,9 @@ function Match(props) {
           setAddToLibState(!addToLibState);
           props.toggleAddToLib(id);
         }}
-      >{addToLib ? <FontAwesomeIcon icon={faCheck} /> : 'skip'}</div>
+      >
+        {addToLib ? <FontAwesomeIcon icon={faCheck} /> : "skip"}
+      </div>
     </div>
   );
 }

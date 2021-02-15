@@ -72,7 +72,7 @@ function App() {
 
   const runSearch = async () => {
     for (let i = 0; i < localSongs.length; i++) {
-      setCurrentSearchSong(i)
+      setCurrentSearchSong(i);
       try {
         await searchForMatches(token, localSongs[i]);
       } catch (err) {
@@ -175,8 +175,12 @@ function App() {
           songs={localSongs}
           playlists={playlists}
           addToSpotify={(IDs, formValues) => addToSpotify(IDs, formValues)}
-          backToMatches={()=> {setStep(null)}}
-          backToStart={()=>{setStep(2)}}
+          backToMatches={() => {
+            setStep(null);
+          }}
+          backToStart={() => {
+            setStep(2);
+          }}
         />
       )}
     </div>

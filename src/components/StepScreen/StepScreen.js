@@ -51,7 +51,7 @@ function StepScreen(props) {
     if (fileList.length !== 0) {
       setTotalFileCount(fileList.length);
       for (let i = 0; i < fileList.length; i++) {
-        if (i% 10 === 0) setCurrentFileCount(i);
+        if (i % 10 === 0) setCurrentFileCount(i);
         const tags = await id3.fromFile(fileList[i]);
         if (tags) {
           const objectUrl = URL.createObjectURL(fileList[i]);

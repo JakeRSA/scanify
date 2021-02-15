@@ -60,7 +60,7 @@ function MatchScreen(props) {
         );
       } else {
         setAnalysisText(
-          `We found ${exactMatches.length} exact matches. Select which ones you'd like to add to your Liked Songs on Spotify`
+          `We found ${exactMatches.length} exact matches. Select which ones you'd like to add to Spotify`
         );
       }
     }
